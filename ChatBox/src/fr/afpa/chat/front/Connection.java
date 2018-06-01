@@ -1,4 +1,4 @@
-package fr.afpa.chat;
+package fr.afpa.chat.front;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
