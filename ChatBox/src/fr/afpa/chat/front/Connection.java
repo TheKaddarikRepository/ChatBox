@@ -1,7 +1,10 @@
 package fr.afpa.chat.front;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
+import javax.crypto.Cipher;
+import javax.crypto.NoSuchPaddingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,12 +30,19 @@ public class Connection extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		while(request.getHeaderNames().hasMoreElements()) {
-			response.getWriter().append(request.getHeaderNames().nextElement()).append("<br/>");
+		try {
+			Cipher c1 = Cipher.getInstance("AES");
+		} catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		
+		request.getServletContext().getRequestDispatcher("/WEB-INF/Title.jsp").include(request, response);
+		request.getServletContext().getRequestDispatcher("/WEB-INF/Header.jsp").include(request, response);
+		request.getServletContext().getRequestDispatcher("/WEB-INF/Menu.jsp").include(request, response);
+		response.getWriter().append(request.getRequestURI()).append("<br/>");
 		response.getWriter().append("Served at: ").append(request.getContextPath()).append("<br/>");
 		response.getWriter().append(request.getProtocol().toString());
+		
 	}
 
 	/**
