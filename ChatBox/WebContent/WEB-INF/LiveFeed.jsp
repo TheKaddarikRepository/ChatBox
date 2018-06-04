@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <div class="col-sm-3 col-sm-offset-4 frame">
 	<ul>
-
 		<li style="width: 100%">
 			<div class="msj macro">
 				<div class="avatar">
@@ -16,7 +16,6 @@
 				</div>
 			</div>
 		</li>
-
 		<li style="width: 100%;">
 			<div class="msj-rta macro">
 				<div class="text text-r">

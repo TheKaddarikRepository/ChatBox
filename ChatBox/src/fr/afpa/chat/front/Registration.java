@@ -1,11 +1,10 @@
-
+package fr.afpa.chat.front;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,35 +12,37 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
-
-
 /**
- * Servlet implementation class Test
+ * Servlet implementation class Registration
  */
-@WebServlet("/Bonjour")
-public class Bonjour extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-
-    public static final int TAILLE_TAMPON = 10240;
-    public static final String CHEMIN_FICHIERS = "C:\\Users\\62018-27-15\\Documents\\fichiers"; // A changer
-    
+@WebServlet("/Registration")
+public class Registration extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	public static final int TAILLE_TAMPON = 2048;
+    public static final String CHEMIN_FICHIERS = "/WEB-INF/images"; // A changer
        
-    public Bonjour() {
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public Registration() {
         super();
         // TODO Auto-generated constructor stub
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        this.getServletContext().getRequestDispatcher("/WEB-INF/bonjour.jsp").forward(request, response);
-    }
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
 
-    public void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
-        // On r�cup�re le champ description comme d'habitude
-        String description = request.getParameter("description");
-        request.setAttribute("description", description );
-
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // On r�cup�re le champ du fichier
-        Part part = request.getPart("fichier");
+        Part part = request.getPart("nomfichier");
             
         // On v�rifie qu'on a bien re�u un fichier
         String nomFichier = getNomFichier(part);
@@ -59,7 +60,7 @@ public class Bonjour extends HttpServlet {
             request.setAttribute(nomChamp, nomFichier);
         }
 
-        this.getServletContext().getRequestDispatcher("/WEB-INF/bonjour.jsp").forward(request, response);
+        this.getServletContext().getRequestDispatcher("/WEB-INF/Register.jsp").forward(request, response);
     }
 
     private void ecrireFichier( Part part, String nomFichier, String chemin ) throws IOException {
@@ -93,5 +94,6 @@ public class Bonjour extends HttpServlet {
             }
         }
         return null;
-    }   
+    }  
+
 }
