@@ -22,7 +22,6 @@ CREATE TABLE IF NOT EXISTS `chatBox`.`users` (
   `name` VARCHAR(35) NULL,
   `firstname` VARCHAR(35) NULL,
   `email` VARCHAR(254) NOT NULL,
-  `password` VARCHAR(256) NOT NULL,
   `avatar` VARCHAR(254) NULL,
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   UNIQUE INDEX `login_UNIQUE` (`login` ASC),
@@ -39,6 +38,8 @@ CREATE TABLE IF NOT EXISTS `chatBox`.`roles` (
   `user_id` INT UNSIGNED NOT NULL,
   `name` VARCHAR(45) NOT NULL,
   `description` TEXT(256) NULL,
+  `private_key` VARBINARY(256) NOT NULL,
+  `password` VARBINARY(256) NOT NULL,
   PRIMARY KEY (`idroles`, `user_id`),
   INDEX `fk_user_role_idx` (`user_id` ASC),
   CONSTRAINT `fk_user_role`

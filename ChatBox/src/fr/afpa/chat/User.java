@@ -2,15 +2,39 @@ package fr.afpa.chat;
 
 import java.util.List;
 
+import fr.afpa.security.UserPermission;
+
 public class User {
 	private String name;
 	private String firstname;
 	private String email;
-	private String password;
 	private String login;
 	private String avatar;
+	private UserPermission permission;
 	private String ip_address;
 	private List<Group> memberships;
+
+	/**
+	 * 
+	 */
+	public User() {
+		super();
+	}
+
+	/**
+	 * @return the permission
+	 */
+	public UserPermission getPermission() {
+		return permission;
+	}
+
+	/**
+	 * @param permission
+	 *            the permission to set
+	 */
+	public void setPermission(UserPermission permission) {
+		this.permission = permission;
+	}
 
 	/**
 	 * 
@@ -22,13 +46,11 @@ public class User {
 	 * @param ip_address
 	 * @throws UserException
 	 */
-	public User(String name, String firstname, String email, String password, String login, String ip_address)
-			throws UserException {
+	public User(String name, String firstname, String email, String login, String ip_address) throws UserException {
 		super();
 		this.setName(name);
 		this.setFirstname(firstname);
 		this.setEmail(email);
-		this.setPassword(password);
 		this.setLogin(login);
 		this.setIp_address(ip_address);
 	}
@@ -49,7 +71,6 @@ public class User {
 		this.setName(name);
 		this.setFirstname(firstname);
 		this.setEmail(email);
-		this.setPassword(password);
 		this.setLogin(login);
 		this.setAvatar(avatar);
 		this.setIp_address(ip_address);
@@ -78,14 +99,6 @@ public class User {
 
 	public void setEmail(String email) throws UserException {
 		this.email = email;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) throws UserException {
-		this.password = password;
 	}
 
 	public String getLogin() {
