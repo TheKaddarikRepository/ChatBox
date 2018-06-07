@@ -5,10 +5,17 @@ import java.util.ArrayList;
 import fr.afpa.security.PasswordRedirection;
 
 public class DaoLogin implements DAOImplementation<PasswordRedirection> {
+	DAOFactory daoFactory;
+	
+	public DaoLogin(DAOFactory daoFactory) {
+		super();
+		this.daoFactory=daoFactory;
+	}
 
 	@Override
 	public ArrayList<PasswordRedirection> getListOfElements(PasswordRedirection element) throws DaoException {
-		// TODO Auto-generated method stub
+
+
 		return null;
 	}
 

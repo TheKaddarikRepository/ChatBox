@@ -5,6 +5,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import fr.afpa.chat.ListeUsers;
+import fr.afpa.chat.Message;
+import fr.afpa.chat.User;
+import fr.afpa.security.PasswordRedirection;
+
 public class DAOFactory {
 	private String login;
 	private String password;
@@ -36,4 +41,19 @@ public class DAOFactory {
 		return DriverManager.getConnection(url, properties);
 	}
 
+	public DAOImplementation<User> getDaoUser() {
+		return new DaoUser(this);
+	}
+
+	public DAOGroupItems<Message> getDAOMessageList(ListeUsers users) {
+		return new DaoMessageList(this, users);
+	}
+
+	public DAOImplementation<PasswordRedirection> getDAOLogin() {
+		return new DaoLogin(this);
+	}
+
+	public DAOGroupItems<User> getDAOMembers(ListeUsers users) {
+		return new DaoMembers(this, users);
+	}
 }
