@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Properties;
 
 import fr.afpa.chat.Group;
 import fr.afpa.chat.GroupException;
@@ -124,6 +125,12 @@ public class DaoGroup implements DAOImplementation<Group> {
 	public void removeElement(Group element) throws DaoException {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void updateElement(Group element, Properties modified) throws DaoException {
+		// TODO Auto-generated method stub
+		
 	}
 
 	

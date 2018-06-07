@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import fr.afpa.chat.User;
 import fr.afpa.chat.UserException;
@@ -127,6 +128,12 @@ public class DaoUser implements DAOImplementation<User> {
 	@Override
 	public void removeElement(User element) throws DaoException {
 
+	}
+
+	@Override
+	public void updateElement(User element, Properties modified) throws DaoException {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

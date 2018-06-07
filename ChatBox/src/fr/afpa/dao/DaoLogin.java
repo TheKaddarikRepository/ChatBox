@@ -1,6 +1,7 @@
 package fr.afpa.dao;
 
 import java.util.ArrayList;
+import java.util.Properties;
 
 import fr.afpa.security.PasswordRedirection;
 
@@ -29,6 +30,12 @@ public class DaoLogin implements DAOImplementation<PasswordRedirection> {
 	public void removeElement(PasswordRedirection element) throws DaoException {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void updateElement(PasswordRedirection element, Properties modified) throws DaoException {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

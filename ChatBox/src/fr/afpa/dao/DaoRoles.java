@@ -6,9 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import fr.afpa.chat.User;
-import fr.afpa.chat.UserException;
 import fr.afpa.security.PermissionException;
 import fr.afpa.security.UserPermission;
 
@@ -112,6 +112,44 @@ public class DaoRoles implements DAOImplementation<UserPermission> {
 		} else {
 			element.setPermission(utilisateurSubscribed.get(0));
 			return element;
+		}
+	}
+
+	@Override
+	public void updateElement(UserPermission element, Properties modified) throws DaoException {
+		Connection connexion = null;
+		PreparedStatement preparedStatementRole = null;
+
+		try {
+			connexion = daoFactory.getConnection();
+			connexion.setAutoCommit(false);
+
+			preparedStatementRole = connexion.prepareStatement("UPDATE roles SET ?, ?, ?, ?   WHERE idroles=?;");
+			preparedStatementRole.setString(1, element.getName());
+			preparedStatementRole.setString(2, element.getText());
+			preparedStatementRole.setBytes(3, element.getKey());
+			preparedStatementRole.setBytes(4, element.getPassword());
+			preparedStatementRole.setInt(5, element.getId().intValue());
+
+			preparedStatementRole.executeUpdate();
+
+			connexion.commit();
+		} catch (SQLException | NoSuchAlgorithmException e) {
+			try {
+				if (connexion != null) {
+					connexion.rollback();
+				}
+			} catch (SQLException e2) {
+			}
+			throw new DaoException("Impossible de communiquer avec la base de données", e);
+		} finally {
+			try {
+				if (connexion != null) {
+					connexion.close();
+				}
+			} catch (SQLException e) {
+				throw new DaoException("Impossible de communiquer avec la base de données", e);
+			}
 		}
 	}
 
