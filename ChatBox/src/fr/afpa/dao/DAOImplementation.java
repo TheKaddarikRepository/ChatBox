@@ -1,7 +1,6 @@
 package fr.afpa.dao;
 
 import java.util.ArrayList;
-import java.util.Properties;
 
 public interface DAOImplementation<T> {
 
@@ -17,6 +16,6 @@ public interface DAOImplementation<T> {
 
 	public void removeElement(T element) throws DaoException;
 
-	public void updateElement(T element, Properties modified) throws DaoException;
+	public void updateElement(T element) throws DaoException;
 
 }

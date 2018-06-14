@@ -25,14 +25,19 @@ public class UserPermission {
 	 * @param key
 	 * @param password
 	 * @throws PermissionException
+	 * @throws BadPaddingException
+	 * @throws IllegalBlockSizeException
+	 * @throws NoSuchPaddingException
+	 * @throws NoSuchAlgorithmException
+	 * @throws InvalidKeyException
 	 */
-	public UserPermission(Roles type, byte[] key, byte[] password) throws PermissionException {
+	public UserPermission(Roles type, String password) throws PermissionException, InvalidKeyException,
+			NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
 		super();
-		this.type=type;
-		this.setKey(key);
+		this.type = type;
 		this.setPassword(password);
 	}
-	
+
 	public UserPermission(String type, byte[] key, byte[] password) throws PermissionException {
 		super();
 		this.setType(type);
@@ -121,7 +126,7 @@ public class UserPermission {
 	}
 
 	public UserPermission checkPermission(User login, String password) {
-		
+
 		return null;
 	}
 
@@ -133,11 +138,11 @@ public class UserPermission {
 	}
 
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
-	
+
 }

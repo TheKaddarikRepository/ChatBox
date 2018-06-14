@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Properties;
 
 import fr.afpa.chat.User;
 import fr.afpa.security.PermissionException;
@@ -27,6 +26,15 @@ public class DaoRoles implements DAOImplementation<UserPermission> {
 
 	@Override
 	public void insertElement(UserPermission element) throws DaoException {
+
+	}
+
+	@Override
+	public void removeElement(UserPermission element) throws DaoException {
+
+	}
+
+	public void insertElement(User element) throws DaoException {
 		Connection connexion = null;
 		PreparedStatement preparedStatementRole = null;
 
@@ -34,12 +42,12 @@ public class DaoRoles implements DAOImplementation<UserPermission> {
 			connexion = daoFactory.getConnection();
 			connexion.setAutoCommit(false);
 			preparedStatementRole = connexion.prepareStatement(
-					"INSERT INTO roles (name,description, private_key, password) VALUES(?,?,?,?) WHERE idroles=?;");
+					"INSERT INTO roles (user_id,name,description, private_key, password) VALUES((SELECT id FROM users WHERE login=?),?,?,?,?) ;");
 			preparedStatementRole.setString(1, element.getName());
-			preparedStatementRole.setString(2, element.getText());
-			preparedStatementRole.setBytes(3, element.getKey());
-			preparedStatementRole.setBytes(4, element.getPassword());
-			preparedStatementRole.setInt(5, element.getId().intValue());
+			preparedStatementRole.setString(2, element.getPermission().getName());
+			preparedStatementRole.setString(3, element.getPermission().getText());
+			preparedStatementRole.setBytes(4, element.getPermission().getKey());
+			preparedStatementRole.setBytes(5, element.getPermission().getPassword());
 
 			preparedStatementRole.executeUpdate();
 
@@ -61,11 +69,6 @@ public class DaoRoles implements DAOImplementation<UserPermission> {
 				throw new DaoException("Impossible de communiquer avec la base de données", e);
 			}
 		}
-	}
-
-	@Override
-	public void removeElement(UserPermission element) throws DaoException {
-
 	}
 
 	public User getElementByUser(User element) throws DaoException {
@@ -116,7 +119,7 @@ public class DaoRoles implements DAOImplementation<UserPermission> {
 	}
 
 	@Override
-	public void updateElement(UserPermission element, Properties modified) throws DaoException {
+	public void updateElement(UserPermission element) throws DaoException {
 		Connection connexion = null;
 		PreparedStatement preparedStatementRole = null;
 
@@ -124,7 +127,8 @@ public class DaoRoles implements DAOImplementation<UserPermission> {
 			connexion = daoFactory.getConnection();
 			connexion.setAutoCommit(false);
 
-			preparedStatementRole = connexion.prepareStatement("UPDATE roles SET ?, ?, ?, ?   WHERE idroles=?;");
+			preparedStatementRole = connexion.prepareStatement(
+					"UPDATE roles SET name=?, description=?, private_key=?, password=?  WHERE idroles=?;");
 			preparedStatementRole.setString(1, element.getName());
 			preparedStatementRole.setString(2, element.getText());
 			preparedStatementRole.setBytes(3, element.getKey());

@@ -6,7 +6,7 @@
 <div id="login_info">
 	<h1>Login</h1>
 	<p>Please enter your login informations.</p>
-	<form action="commerce.php" method="post">
+	<form action="Connection" method="post">
 		<fieldset>
 			<label for="login_name">Login</label><br> <input type="text"
 				name="my_login" id="login_name">

@@ -1,5 +1,13 @@
 package fr.afpa.chat;
 
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
+import fr.afpa.security.PermissionException;
 import fr.afpa.security.UserPermission;
 
 public class User {
@@ -46,8 +54,8 @@ public class User {
 	 * @param ip_address
 	 * @param memberships
 	 */
-	public User(String name, String firstname, String email, String password, String login, String avatar,
-			String ip_address) throws UserException {
+	public User(String name, String firstname, String email, String login, String avatar, String ip_address)
+			throws UserException {
 		super();
 		this.setName(name);
 		this.setFirstname(firstname);
@@ -173,4 +181,11 @@ public class User {
 		this.ip_address = ip_address;
 	}
 
+	public static User register(String name, String firstname, String email, String password, String login,
+			String avatar) throws NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, PermissionException, UserException, InvalidKeyException  {
+		User nubs = new User(name, firstname, email, login);
+		nubs.setPermission(new UserPermission(Roles.User, password));
+
+		return null;
+	}
 }

@@ -1,13 +1,10 @@
 package fr.afpa.security;
 
-import java.time.LocalDateTime;
-
 import fr.afpa.chat.User;
 
 public class PasswordRedirection {
 	private String url;
 	private User user;
-	private LocalDateTime date;
 	private String state;
 
 	/**
@@ -16,11 +13,10 @@ public class PasswordRedirection {
 	 * @param date
 	 * @param state
 	 */
-	public PasswordRedirection(String url, User user, LocalDateTime date, String state) {
+	public PasswordRedirection(String url, User user, String state) {
 		super();
 		this.url = url;
 		this.user = user;
-		this.date = date;
 		this.state = state;
 	}
 
@@ -47,13 +43,6 @@ public class PasswordRedirection {
 	}
 
 	/**
-	 * @return the date
-	 */
-	public LocalDateTime getDate() {
-		return date;
-	}
-
-	/**
 	 * @return the state
 	 */
 	public String getState() {
@@ -77,14 +66,6 @@ public class PasswordRedirection {
 	}
 
 	/**
-	 * @param date
-	 *            the date to set
-	 */
-	public void setDate(LocalDateTime date) {
-		this.date = date;
-	}
-
-	/**
 	 * @param state
 	 *            the state to set
 	 */
@@ -101,7 +82,6 @@ public class PasswordRedirection {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((date == null) ? 0 : date.hashCode());
 		result = prime * result + ((state == null) ? 0 : state.hashCode());
 		result = prime * result + ((url == null) ? 0 : url.hashCode());
 		result = prime * result + ((user == null) ? 0 : user.hashCode());
@@ -122,11 +102,6 @@ public class PasswordRedirection {
 		if (getClass() != obj.getClass())
 			return false;
 		PasswordRedirection other = (PasswordRedirection) obj;
-		if (date == null) {
-			if (other.date != null)
-				return false;
-		} else if (!date.equals(other.date))
-			return false;
 		if (state == null) {
 			if (other.state != null)
 				return false;
@@ -152,8 +127,7 @@ public class PasswordRedirection {
 	 */
 	@Override
 	public String toString() {
-		return "PasswordRedirection [url=" + url + ", user=" + user.toString() + ", date=" + date.toString()
-				+ ", state=" + state + "]";
+		return "PasswordRedirection [url=" + url + ", user=" + user.toString() + ", state=" + state + "]";
 	}
 
 }

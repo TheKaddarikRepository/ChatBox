@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Properties;
 
 import fr.afpa.chat.User;
 import fr.afpa.chat.UserException;
@@ -28,7 +27,7 @@ public class DaoUser implements DAOImplementation<User> {
 		try {
 			connexion = daoFactory.getConnection();
 			statement = connexion.prepareStatement(
-					"SELECT login, email, avatar, name, firstname FROM users WHERE login LIKE CONCAT(?,%) AND email LIKE CONCAT(?,%);");
+					"SELECT login, email, avatar, name, firstname FROM users WHERE login=? OR email=?;");
 			if (element.getLogin() != null) {
 				statement.setString(1, element.getName());
 			} else {
@@ -87,13 +86,15 @@ public class DaoUser implements DAOImplementation<User> {
 			connexion = daoFactory.getConnection();
 			connexion.setAutoCommit(false);
 			preparedStatementUser = connexion
-					.prepareStatement("INSERT INTO users (name,firstname,email,avatar) VALUES(?,?,?,?);");
+					.prepareStatement("INSERT INTO users (name,firstname,email,avatar,login) VALUES(?,?,?,?,?);");
 			preparedStatementUser.setString(1, element.getName());
 			preparedStatementUser.setString(2, element.getFirstname());
 			preparedStatementUser.setString(3, element.getEmail());
 			preparedStatementUser.setString(4, element.getAvatar());
+			preparedStatementUser.setString(5, element.getLogin());
 			preparedStatementUser.executeUpdate();
 			id_user = preparedStatementUser.getGeneratedKeys().getInt("id");
+
 			preparedStatementRole = connexion.prepareStatement(
 					"INSERT INTO roles (user_id,name,description, private_key, password) VALUES(?,?,?,?,?);");
 			preparedStatementRole.setInt(1, id_user);
@@ -102,7 +103,7 @@ public class DaoUser implements DAOImplementation<User> {
 			preparedStatementRole.setBytes(4, element.getPermission().getKey());
 			preparedStatementRole.setBytes(5, element.getPermission().getPassword());
 
-			preparedStatementRole.executeUpdate();
+			preparedStatementRole.execute();
 
 			connexion.commit();
 		} catch (SQLException | NoSuchAlgorithmException e) {
@@ -131,9 +132,53 @@ public class DaoUser implements DAOImplementation<User> {
 	}
 
 	@Override
-	public void updateElement(User element, Properties modified) throws DaoException {
-		// TODO Auto-generated method stub
-		
+	public void updateElement(User element) throws DaoException {
+		Connection connexion = null;
+		PreparedStatement preparedStatementUser = null;
+		int id_user;
+		PreparedStatement preparedStatementRole = null;
+
+		try {
+			connexion = daoFactory.getConnection();
+			connexion.setAutoCommit(false);
+			preparedStatementUser = connexion
+					.prepareStatement("UPDATE users SET name=?, firstname=? , email=? , avatar=? WHERE login=?;");
+			preparedStatementUser.setString(1, element.getName());
+			preparedStatementUser.setString(2, element.getFirstname());
+			preparedStatementUser.setString(3, element.getEmail());
+			preparedStatementUser.setString(4, element.getAvatar());
+			preparedStatementUser.setString(5, element.getLogin());
+			preparedStatementUser.executeUpdate();
+			id_user = preparedStatementUser.getGeneratedKeys().getInt("id");
+			preparedStatementRole = connexion.prepareStatement(
+					"INSERT INTO roles (user_id,name,description, private_key, password) VALUES(?,?,?,?,?);");
+			preparedStatementRole.setInt(1, id_user);
+			preparedStatementRole.setString(2, element.getPermission().getName());
+			preparedStatementRole.setString(3, element.getPermission().getText());
+			preparedStatementRole.setBytes(4, element.getPermission().getKey());
+			preparedStatementRole.setBytes(5, element.getPermission().getPassword());
+
+			preparedStatementRole.execute();
+
+			connexion.commit();
+		} catch (SQLException | NoSuchAlgorithmException e) {
+			try {
+				if (connexion != null) {
+					connexion.rollback();
+				}
+			} catch (SQLException e2) {
+			}
+			throw new DaoException("Impossible de communiquer avec la base de données", e);
+		} finally {
+			try {
+				if (connexion != null) {
+					connexion.close();
+				}
+			} catch (SQLException e) {
+				throw new DaoException("Impossible de communiquer avec la base de données", e);
+			}
+		}
+
 	}
 
 }

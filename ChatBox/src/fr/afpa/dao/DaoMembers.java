@@ -14,7 +14,7 @@ import fr.afpa.chat.ListeUsers;
 import fr.afpa.chat.User;
 import fr.afpa.chat.UserException;
 
-public class DaoMembers implements DAOGroupItems<User> {
+public class DaoMembers implements DAOGroupItems<User>, DAOLastRead {
 	private DAOFactory daoFactory;
 	ListeUsers listeUtilisateurs;
 

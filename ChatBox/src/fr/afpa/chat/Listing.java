@@ -16,7 +16,6 @@ public abstract class Listing<T> implements ActionItem<T> {
 		super();
 	}
 
-	abstract public ArrayList<T> getListe() throws DaoException;
 
 	abstract public void setListe(ArrayList<T> liste);
 

@@ -10,29 +10,15 @@ public class ListeUsers extends Listing<User> {
 	private DAOFactory daoFactory;
 
 	/**
-	 * 
-	 */
-	public ListeUsers() {
-		super();
-		this.daoFactory = fr.afpa.dao.DAOFactory.getInstance();
-	}
-
-	/**
 	 * @param liste
 	 */
 	public ListeUsers(ArrayList<User> liste) {
 		super(liste);
-		// TODO Auto-generated constructor stub
+		this.daoFactory = fr.afpa.dao.DAOFactory.getInstance();
 	}
 
-	@Override
 	public ArrayList<User> getListe() throws DaoException {
-		if (liste.isEmpty()) {
-			DAOImplementation<User> myDAO = daoFactory.getDaoUser();
-			return myDAO.getListOfElements(new User());
-		} else {
-			return liste;
-		}
+		return liste;
 	}
 
 	@Override
@@ -42,29 +28,31 @@ public class ListeUsers extends Listing<User> {
 
 	@Override
 	public void addItem(User item) throws DaoException {
-		// TODO Auto-generated method stub
-
+		DAOImplementation<User> myDAO = daoFactory.getDaoUser();
+		myDAO.insertElement(item);
+		liste.add(item);
 	}
 
 	@Override
 	public void suppItem(User item) throws DaoException {
-		// TODO Auto-generated method stub
-
+		DAOImplementation<User> myDAO = daoFactory.getDaoUser();
+		myDAO.removeElement(item);
+		liste.remove(item);
 	}
 
 	@Override
 	public User getItem(User item) throws DaoException {
 		if (liste.isEmpty()) {
 			DAOImplementation<User> myDAO = daoFactory.getDaoUser();
-			return myDAO.getListOfElements(item).get(0);
-		} else {
-			int index = liste.indexOf(item);
-			if (index != -1) {
-				return liste.get(index);
-			} else {
-				throw new DaoException("L'utilisateur n'est pas dans la liste.", null);
-			}
+			this.liste = myDAO.getListOfElements(new User());
 		}
+		int index = liste.indexOf(item);
+		if (index != -1) {
+			return liste.get(index);
+		} else {
+			throw new DaoException("L'utilisateur n'est pas dans la liste.", null);
+		}
+
 	}
 
 }

@@ -1,15 +1,11 @@
 package fr.afpa.dao;
 
-import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Properties;
 
 import fr.afpa.chat.Group;
 import fr.afpa.chat.GroupException;
@@ -123,16 +119,77 @@ public class DaoGroup implements DAOImplementation<Group> {
 
 	@Override
 	public void removeElement(Group element) throws DaoException {
-		// TODO Auto-generated method stub
+		Connection connexion = null;
+		PreparedStatement preparedStatementUser = null;
+
+		try {
+			connexion = daoFactory.getConnection();
+			connexion.setAutoCommit(false);
+			
+			preparedStatementUser = connexion.prepareStatement(
+					"UPDATE groups SET end_date=NOW() WHERE idgroups= ?;");
+			preparedStatementUser.setInt(1, element.getGroup_id().intValue());
+			preparedStatementUser.executeUpdate();
+			
+			connexion.commit();
+		} catch (SQLException e) {
+			try {
+				if (connexion != null) {
+					connexion.rollback();
+				}
+			} catch (SQLException e2) {
+			}
+			throw new DaoException("Impossible de communiquer avec la base de données", e);
+		} finally {
+			try {
+				if (connexion != null) {
+					connexion.close();
+				}
+			} catch (SQLException e) {
+				throw new DaoException("Impossible de communiquer avec la base de données", e);
+			}
+		}
 
 	}
 
 	@Override
-	public void updateElement(Group element, Properties modified) throws DaoException {
-		// TODO Auto-generated method stub
+	public void updateElement(Group element) throws DaoException {
+		Connection connexion = null;
+		PreparedStatement preparedStatementUser = null;
+
+		try {
+			connexion = daoFactory.getConnection();
+			connexion.setAutoCommit(false);
+			
+			preparedStatementUser = connexion.prepareStatement(
+					"UPDATE groups SET name=?,admin=(SELECT id FROM users WHERE login=?), group_type=? WHERE idgroups= ?;");
+			
+			preparedStatementUser.setString(1, element.getName() );
+			preparedStatementUser.setString(2, element.getAdmin().getLogin());
+			preparedStatementUser.setString(3, element.getType().toString());
+			preparedStatementUser.executeUpdate();
+			
+			connexion.commit();
+		} catch (SQLException e) {
+			try {
+				if (connexion != null) {
+					connexion.rollback();
+				}
+			} catch (SQLException e2) {
+			}
+			throw new DaoException("Impossible de communiquer avec la base de données", e);
+		} finally {
+			try {
+				if (connexion != null) {
+					connexion.close();
+				}
+			} catch (SQLException e) {
+				throw new DaoException("Impossible de communiquer avec la base de données", e);
+			}
+		}
 		
 	}
 
-	
+
 
 }
