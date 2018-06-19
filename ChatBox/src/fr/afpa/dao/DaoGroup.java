@@ -52,7 +52,6 @@ public class DaoGroup implements DAOImplementation<Group> {
 				String login = firstStep.getString("users.login");
 				String nom = firstStep.getString("users.name");
 				String prenom = firstStep.getString("users.firstname");
-				String image = firstStep.getString("users.avatar");
 				String email = firstStep.getString("users.email");
 
 				admin = new User(nom, prenom, email, login);
@@ -125,12 +124,11 @@ public class DaoGroup implements DAOImplementation<Group> {
 		try {
 			connexion = daoFactory.getConnection();
 			connexion.setAutoCommit(false);
-			
-			preparedStatementUser = connexion.prepareStatement(
-					"UPDATE groups SET end_date=NOW() WHERE idgroups= ?;");
+
+			preparedStatementUser = connexion.prepareStatement("UPDATE groups SET end_date=NOW() WHERE idgroups= ?;");
 			preparedStatementUser.setInt(1, element.getGroup_id().intValue());
 			preparedStatementUser.executeUpdate();
-			
+
 			connexion.commit();
 		} catch (SQLException e) {
 			try {
@@ -160,15 +158,15 @@ public class DaoGroup implements DAOImplementation<Group> {
 		try {
 			connexion = daoFactory.getConnection();
 			connexion.setAutoCommit(false);
-			
+
 			preparedStatementUser = connexion.prepareStatement(
 					"UPDATE groups SET name=?,admin=(SELECT id FROM users WHERE login=?), group_type=? WHERE idgroups= ?;");
-			
-			preparedStatementUser.setString(1, element.getName() );
+
+			preparedStatementUser.setString(1, element.getName());
 			preparedStatementUser.setString(2, element.getAdmin().getLogin());
 			preparedStatementUser.setString(3, element.getType().toString());
 			preparedStatementUser.executeUpdate();
-			
+
 			connexion.commit();
 		} catch (SQLException e) {
 			try {
@@ -187,9 +185,7 @@ public class DaoGroup implements DAOImplementation<Group> {
 				throw new DaoException("Impossible de communiquer avec la base de données", e);
 			}
 		}
-		
+
 	}
-
-
 
 }

@@ -2,33 +2,49 @@ package fr.afpa.chat;
 
 public class UserException extends Exception {
 	private static final long serialVersionUID = 1648913571895486723L;
+	private UserAttribute type;
 
 	/**
 	 * 
 	 * @param message
 	 * @param cause
 	 */
-	public UserException(String message, Throwable cause) {
+	public UserException(String message, Throwable cause, UserAttribute type) {
 		super(message, cause);
-		// TODO Auto-generated constructor stub
+		this.setType(type);
 	}
 
 	/**
 	 * 
 	 * @param message
 	 */
-	public UserException(String message) {
+	public UserException(String message, UserAttribute type) {
 		super(message);
-		// TODO Auto-generated constructor stub
+		this.setType(type);
 	}
 
 	/**
 	 * 
 	 * @param cause
 	 */
-	public UserException(Throwable cause) {
+	public UserException(Throwable cause, UserAttribute type) {
 		super(cause);
-		// TODO Auto-generated constructor stub
+		this.setType(type);
+	}
+
+	/**
+	 * @return the type
+	 */
+	public UserAttribute getType() {
+		return type;
+	}
+
+	/**
+	 * @param type
+	 *            the type to set
+	 */
+	private void setType(UserAttribute type) {
+		this.type = type;
 	}
 
 }

@@ -25,22 +25,28 @@ CREATE TABLE IF NOT EXISTS `chatBox`.`users` (
   `avatar` VARCHAR(254) NULL,
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   UNIQUE INDEX `login_UNIQUE` (`login` ASC),
-  PRIMARY KEY (`login`, `email`),
+  PRIMARY KEY (`login`),
   INDEX `candidate` (`id` ASC))
 ENGINE = InnoDB;
 
+INSERT INTO `chatBox`.`users` 
+(`login`, `name`, `firstname`, `email`, `avatar`) 
+VALUES('admin','ferrand','cedric','cedric.ferrand@free.fr','/images/compte.png');
 
+UPDATE `chatBox`.`users` SET avatar='/images/compte.png' WHERE login='admin';
+
+select * from chatbox.users;
 -- -----------------------------------------------------
 -- Table `chatBox`.`roles`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `chatBox`.`roles` (
-  `idroles` INT UNSIGNED NOT NULL,
+  `idroles` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_id` INT UNSIGNED NOT NULL,
   `name` VARCHAR(45) NOT NULL,
   `description` TEXT(256) NULL,
   `private_key` VARBINARY(256) NOT NULL,
   `password` VARBINARY(256) NOT NULL,
-  PRIMARY KEY (`idroles`, `user_id`),
+  PRIMARY KEY (`idroles`),
   INDEX `fk_user_role_idx` (`user_id` ASC),
   CONSTRAINT `fk_user_role`
     FOREIGN KEY (`user_id`)
@@ -48,7 +54,6 @@ CREATE TABLE IF NOT EXISTS `chatBox`.`roles` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
 
 -- -----------------------------------------------------
 -- Table `chatBox`.`groups`
@@ -144,3 +149,4 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+

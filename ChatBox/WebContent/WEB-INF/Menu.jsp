@@ -19,7 +19,7 @@
 										search in groups names</label> <input type="text" name="in_grp_name" />
 									<label style="display: none">execute search on groups</label>
 									<button type="submit">
-										<img src="/WEB-INF/images/loupe.png" alt="loupe" name="loupe"
+										<img src="/images/loupe.png" alt="loupe" name="loupe"
 											class="loupe" />
 									</button>
 								</span>
@@ -36,7 +36,7 @@
 			<span> <input type="text" placeholder="Rechercher"
 				name="search_word" id="enter_search" />
 				<button type="submit">
-					<img src="/WEB-INF/images/loupe.png" alt="loupe" name="loupe"
+					<img src="/images/loupe.png" alt="loupe" name="loupe"
 						class="loupe" />
 				</button>
 			</span>
@@ -50,7 +50,7 @@
 						<span> <label>text to search in users names</label> <input
 							type="text" name="in_frd_name" />
 							<button type="submit" value="panier" name="direction">
-								<img src="/WEB-INF/images/loupe.png" alt="loupe" name="loupe"
+								<img src="/images/loupe.png" alt="loupe" name="loupe"
 									class="loupe" />
 							</button>
 						</span>

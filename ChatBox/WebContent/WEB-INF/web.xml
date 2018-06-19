@@ -1,16 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:jsp="http://java.sun.com/xml/ns/javaee/jsp" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
-  <servlet>
-    <servlet-name>Connection</servlet-name>
-    <servlet-class>fr.afpa.chat.front.Connection</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>Connection</servlet-name>
-    <url-pattern>/Connection</url-pattern>
-  </servlet-mapping>
-  <welcome-file-list>
-    <welcome-file>Connection</welcome-file>
-  </welcome-file-list>
+	<!-- <servlet> -->
+	<!-- <servlet-name>Connection</servlet-name> -->
+	<!-- <servlet-class>fr.afpa.chat.front.Connection</servlet-class> -->
+	<!-- </servlet> -->
+	<!-- <servlet> -->
+	<!-- <servlet-name>Registration</servlet-name> -->
+	<!-- <servlet-class>fr.afpa.chat.front.Registration</servlet-class> -->
+	<!-- </servlet> -->
+	<!-- <servlet-mapping> -->
+	<!-- <servlet-name>Connection</servlet-name> -->
+	<!-- <url-pattern>/Connection</url-pattern> -->
+	<!-- </servlet-mapping> -->
+	<!-- <servlet-mapping> -->
+	<!-- <servlet-name>Registration</servlet-name> -->
+	<!-- <url-pattern>/Registration</url-pattern> -->
+	<!-- </servlet-mapping> -->
+<!-- 	<servlet> -->
+<!--     <servlet-name>Registration</servlet-name> -->
+<!--     <servlet-class>fr.afpa.chat.front.Registration</servlet-class> -->
+<!--     <multipart-config> -->
+<!--       <location>C:\Users\62018-27-15\Documents\fictmp</location> -->
+<!--       <max-file-size>2097152</max-file-size> -->
+<!--       <max-request-size>10485760</max-request-size> -->
+<!--       <file-size-threshold>209715</file-size-threshold> -->
+<!--     </multipart-config> -->
+<!--   </servlet> -->
+<!--   <servlet-mapping> -->
+<!--     <servlet-name>Registration</servlet-name> -->
+<!--     <url-pattern>/Registration</url-pattern> -->
+<!--   </servlet-mapping> -->
+	<welcome-file-list>
+	<welcome-file>Connection</welcome-file>
+</welcome-file-list>
   <context-param>
     <param-name>JDBC_DRIVER</param-name>
     <param-value>com.mysql.jdbc.Driver</param-value>
@@ -30,31 +52,4 @@
   <session-config>
     <session-timeout>5</session-timeout>
   </session-config>
-  <servlet>
-    <display-name>Apache-Axis Servlet</display-name>
-    <servlet-name>AxisServlet</servlet-name>
-    <servlet-class>org.apache.axis.transport.http.AxisServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>AxisServlet</servlet-name>
-    <url-pattern>/servlet/AxisServlet</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>AxisServlet</servlet-name>
-    <url-pattern>*.jws</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>AxisServlet</servlet-name>
-    <url-pattern>/services/*</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <display-name>Axis Admin Servlet</display-name>
-    <servlet-name>AdminServlet</servlet-name>
-    <servlet-class>org.apache.axis.transport.http.AdminServlet</servlet-class>
-    <load-on-startup>100</load-on-startup>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>AdminServlet</servlet-name>
-    <url-pattern>/servlet/AdminServlet</url-pattern>
-  </servlet-mapping>
 </web-app>

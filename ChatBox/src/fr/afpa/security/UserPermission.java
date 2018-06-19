@@ -13,6 +13,8 @@ import javax.crypto.spec.SecretKeySpec;
 
 import fr.afpa.chat.Roles;
 import fr.afpa.chat.User;
+import fr.afpa.dao.DAOFactory;
+import fr.afpa.dao.DaoException;
 
 public class UserPermission {
 	private Integer id;
@@ -65,7 +67,7 @@ public class UserPermission {
 	 */
 	public byte[] getKey() throws NoSuchAlgorithmException {
 		if (key == null) {
-			KeyGenerator kgen = KeyGenerator.getInstance("Blowfish");
+			KeyGenerator kgen = KeyGenerator.getInstance("HmacSHA256");
 			SecretKey skey = kgen.generateKey();
 			byte[] raw = skey.getEncoded();
 			this.key = raw;
@@ -117,17 +119,41 @@ public class UserPermission {
 	}
 
 	public void setPassword(String password) throws NoSuchAlgorithmException, NoSuchPaddingException,
-			InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
-		Cipher cipher = Cipher.getInstance("Blowfish");
-		SecretKeySpec skeySpec = new SecretKeySpec(getKey(), "Blowfish");
-		cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
-		byte[] encrypted = cipher.doFinal(password.getBytes());
-		this.password = encrypted;
+			InvalidKeyException, IllegalBlockSizeException, BadPaddingException, PermissionException {
+		if (password.matches("([0-9 A-Za-z!@#$%]{8,}([0-9])([!@#$%]))")) {
+			Cipher cipher = Cipher.getInstance("Blowfish");
+			SecretKeySpec skeySpec = new SecretKeySpec(this.getKey(), "Blowfish");
+			cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
+			byte[] encrypted = cipher.doFinal(password.getBytes());
+			this.password = encrypted;
+		} else {
+			throw new PermissionException("Le mot de passe est trop faible.");
+		}
 	}
 
-	public UserPermission checkPermission(User login, String password) {
-
-		return null;
+	public static UserPermission checkPermission(User login, String password) throws DaoException, PermissionException {
+		UserPermission autor;
+		
+		if (password.matches("([0-9 A-Za-z!@#$%]{8,}([0-9])([!@#$%]))")) {
+			autor = DAOFactory.getInstance().getRoles().getElementByUser(login);
+			Cipher cipher;
+			try {
+				cipher = Cipher.getInstance("Blowfish");
+				SecretKeySpec skeySpec = new SecretKeySpec(autor.getKey(), "Blowfish");
+				cipher.init(Cipher.DECRYPT_MODE, skeySpec);
+				byte[] decrypted = cipher.doFinal(autor.getPassword());
+				if (password.equals(new String(decrypted))) {
+					return autor;
+				} else {
+					throw new PermissionException("Le couple login/password n'existe pas.");
+				}
+			} catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException
+					| BadPaddingException e) {
+				throw new PermissionException("Le couple login/password n'existe pas.", e);
+			}
+		} else {
+			throw new PermissionException("Le mot de passe est trop faible.");
+		}
 	}
 
 	/**
@@ -143,6 +169,13 @@ public class UserPermission {
 	 */
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	/**
+	 * @return the type
+	 */
+	public Roles getType() {
+		return type;
 	}
 
 }

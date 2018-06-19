@@ -26,17 +26,17 @@ public class DaoUser implements DAOImplementation<User> {
 		ResultSet resultat = null;
 		try {
 			connexion = daoFactory.getConnection();
-			statement = connexion.prepareStatement(
-					"SELECT login, email, avatar, name, firstname FROM users WHERE login=? OR email=?;");
 			if (element.getLogin() != null) {
+				statement = connexion.prepareStatement(
+						"SELECT login, email, avatar, name, firstname FROM users WHERE login=?;");
 				statement.setString(1, element.getName());
-			} else {
-				statement.setString(1, "");
-			}
-			if (element.getEmail() != null) {
-				statement.setString(2, element.getEmail());
-			} else {
-				statement.setString(2, "");
+			} else 	if (element.getEmail() != null) {
+				statement = connexion.prepareStatement(
+						"SELECT login, email, avatar, name, firstname FROM users WHERE email=?;");
+				statement.setString(1, element.getEmail());
+			}else {
+				statement = connexion.prepareStatement(
+						"SELECT login, email, avatar, name, firstname FROM users;");
 			}
 			resultat = statement.executeQuery();
 			while (resultat.next()) {
@@ -93,11 +93,10 @@ public class DaoUser implements DAOImplementation<User> {
 			preparedStatementUser.setString(4, element.getAvatar());
 			preparedStatementUser.setString(5, element.getLogin());
 			preparedStatementUser.executeUpdate();
-			id_user = preparedStatementUser.getGeneratedKeys().getInt("id");
 
 			preparedStatementRole = connexion.prepareStatement(
-					"INSERT INTO roles (user_id,name,description, private_key, password) VALUES(?,?,?,?,?);");
-			preparedStatementRole.setInt(1, id_user);
+					"INSERT INTO roles (user_id,name,description, private_key, password) VALUES((SELECT id FROM users WHERE login=?),?,?,?,?);");
+			preparedStatementRole.setString(1, element.getLogin());
 			preparedStatementRole.setString(2, element.getPermission().getName());
 			preparedStatementRole.setString(3, element.getPermission().getText());
 			preparedStatementRole.setBytes(4, element.getPermission().getKey());

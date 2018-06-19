@@ -11,7 +11,7 @@ import fr.afpa.chat.User;
 import fr.afpa.security.PermissionException;
 import fr.afpa.security.UserPermission;
 
-public class DaoRoles implements DAOImplementation<UserPermission> {
+public class DaoRoles implements IntDAOAuthentication {
 	DAOFactory daoFactory;
 
 	public DaoRoles(DAOFactory daoFactory) {
@@ -19,21 +19,12 @@ public class DaoRoles implements DAOImplementation<UserPermission> {
 		this.daoFactory = daoFactory;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see fr.afpa.dao.IntDAOAuthentication#insertElement(fr.afpa.chat.User)
+	 */
 	@Override
-	public ArrayList<UserPermission> getListOfElements(UserPermission element) throws DaoException {
-		return null;
-	}
-
-	@Override
-	public void insertElement(UserPermission element) throws DaoException {
-
-	}
-
-	@Override
-	public void removeElement(UserPermission element) throws DaoException {
-
-	}
-
 	public void insertElement(User element) throws DaoException {
 		Connection connexion = null;
 		PreparedStatement preparedStatementRole = null;
@@ -71,7 +62,13 @@ public class DaoRoles implements DAOImplementation<UserPermission> {
 		}
 	}
 
-	public User getElementByUser(User element) throws DaoException {
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see fr.afpa.dao.IntDAOAuthentication#getElementByUser(fr.afpa.chat.User)
+	 */
+	@Override
+	public UserPermission getElementByUser(User element) throws DaoException {
 		ArrayList<UserPermission> utilisateurSubscribed = new ArrayList<UserPermission>();
 		Connection connexion = null;
 		PreparedStatement statement = null;
@@ -113,11 +110,16 @@ public class DaoRoles implements DAOImplementation<UserPermission> {
 		if (utilisateurSubscribed.size() != 1) {
 			throw new DaoException("L'utilisateur n'existe pas.", null);
 		} else {
-			element.setPermission(utilisateurSubscribed.get(0));
-			return element;
+			return utilisateurSubscribed.get(0);
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see fr.afpa.dao.IntDAOAuthentication#updateElement(fr.afpa.security.
+	 * UserPermission)
+	 */
 	@Override
 	public void updateElement(UserPermission element) throws DaoException {
 		Connection connexion = null;

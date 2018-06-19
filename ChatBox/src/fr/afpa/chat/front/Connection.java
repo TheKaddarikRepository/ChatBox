@@ -1,5 +1,6 @@
 package fr.afpa.chat.front;
 
+import java.io.File;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -9,11 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.afpa.dao.DAOFactory;
+import fr.afpa.dao.DaoException;
 
 /**
  * Servlet implementation class Connection
  */
-
+@WebServlet(urlPatterns = {"/Connection"}, loadOnStartup=1)
 public class Connection extends HttpServlet {
 
 	/*
@@ -24,7 +26,13 @@ public class Connection extends HttpServlet {
 	@Override
 	public void init() throws ServletException {
 		super.init();
-		DAOFactory.getInstance(this.getServletContext());
+		try {
+			DAOFactory.init(this.getServletContext());
+		} catch (DaoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		;
 	}
 
 	/**
@@ -46,15 +54,16 @@ public class Connection extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		request.getServletContext().getRequestDispatcher("/WEB-INF/Title.jsp").include(request, response);
 		request.getServletContext().getRequestDispatcher("/WEB-INF/Header.jsp").include(request, response);
 		request.getServletContext().getRequestDispatcher("/WEB-INF/Menu.jsp").include(request, response);
 		request.getServletContext().getRequestDispatcher("/WEB-INF/Login.jsp").include(request, response);
-		response.getWriter().append(request.getRequestURL()).append("<br/>");
-		response.getWriter().append("Served at: ").append(request.getContextPath()).append("<br/>");
-		response.getWriter().append(request.getProtocol().toString());
-
+		
+		response.getWriter().append("<p>"+request.getRequestURL()).append("</p>");
+		response.getWriter().append("<p>").append(request.getProtocol().toString()).append("</p>");
+		response.getWriter().append("<p>").append(request.getRemoteAddr()).append((new File(request.getServletContext().getRealPath("/WEB-INF/images/compte.png")).exists()?"TRUE":"FALSE")).append("</p>");
+		request.getServletContext().getRequestDispatcher("/WEB-INF/footer.jsp").include(request, response);
+		
 	}
 
 	/**

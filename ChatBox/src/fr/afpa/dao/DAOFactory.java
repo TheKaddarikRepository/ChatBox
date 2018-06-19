@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.Part;
 
 import fr.afpa.chat.Group;
 import fr.afpa.chat.ListeUsers;
@@ -20,7 +21,7 @@ public class DAOFactory {
 	private static String url;
 	private static ListeUsers listeUtilisateurs;
 
-	public DAOFactory(String url, String username, String password) {
+	public DAOFactory(String url, String username, String password) throws DaoException {
 		DAOFactory.url = url;
 		DAOFactory.login = username;
 		DAOFactory.password = password;
@@ -30,7 +31,7 @@ public class DAOFactory {
 	private DAOFactory() {
 	}
 
-	public static void init(ServletContext context) {
+	public static void init(ServletContext context) throws DaoException {
 		try {
 			Class.forName(context.getInitParameter("JDBC_DRIVER"));
 			DAOFactory.url = context.getInitParameter("JDBC_URL");
@@ -81,25 +82,22 @@ public class DAOFactory {
 		return new DaoMembers(this, listeUtilisateurs);
 	}
 
-	public DAOImplementation<UserPermission> getRoles() {
+	public IntDAOAuthentication getRoles() {
 		return new DaoRoles(this);
+	}
+
+	public IntDAOImage getImage() {
+		return new DaoImage();
 	}
 
 	/**
 	 * @return the listeUtilisateurs
+	 * @throws DaoException
 	 */
-	private static ListeUsers getListeUtilisateurs() {
+	private static ListeUsers getListeUtilisateurs() throws DaoException {
 		DaoUser daoUser = new DaoUser(DAOFactory.getInstance());
-		return listeUtilisateurs;
-	}
-
-	/**
-	 * @param listeUtilisateurs
-	 *            the listeUtilisateurs to set
-	 */
-	private void setListeUtilisateurs(ListeUsers listeUtilisateurs) {
-
-		DAOFactory.listeUtilisateurs = listeUtilisateurs;
+		DAOFactory.listeUtilisateurs = new ListeUsers(daoUser.getListOfElements(new User()));
+		return DAOFactory.listeUtilisateurs;
 	}
 
 }

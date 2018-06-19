@@ -1,13 +1,14 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
-	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <div class="register">
-	<form action="commerce.php" method="post" enctype="multipart/form-data">
+	<form action="/ChatBox/Registration" method="post"
+		enctype="multipart/form-data">
 		<div class="register-client">
 			<h3>INFORMATION PERSONNELLE</h3>
 			<div>
 				<span>Prenom<label>*</label></span> <input type="text" name="prenom"
-					placeholder="votre prénom" required>
+					placeholder="votre prÃ©nom" required>
 				<c:if test="${firstname_error!=null }">
 					<c:out value="${firstname_error.getMessage()}" />
 				</c:if>
@@ -48,7 +49,7 @@
 			<div>
 				<span>Password<label>*</label></span> <input type="password"
 					name="pswd1" id="pswd1"
-					placeholder="> 8 charactères (1 lettre, 1 chifre, 1 (!@#$%))"
+					placeholder="> 8 charactÃ¨res (1 lettre, 1 chifre, 1 (!@#$%))"
 					pattern="[0-9A-Za-z!@#$%]{8,}" required>
 				<c:if test="${password_error!=null }">
 					<c:out value="${password_error.getMessage()}" />
@@ -58,9 +59,7 @@
 			<br>
 			<div>
 				<span>Confirm Password<label>*</label></span> <input type="password"
-					name="pswd2" id="pswd2" pattern="[0-9A-Za-z!@#$%]{8,}"
-					onfocusout="comparePswds(document.getElementById('pswd1').value);"
-					required>
+					name="pswd2" id="pswd2" pattern="[0-9A-Za-z!@#$%]{8,}" required>
 			</div>
 			<br>
 			<div>

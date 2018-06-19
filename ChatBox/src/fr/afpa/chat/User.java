@@ -7,6 +7,8 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
+import fr.afpa.dao.DAOFactory;
+import fr.afpa.dao.DaoException;
 import fr.afpa.security.PermissionException;
 import fr.afpa.security.UserPermission;
 
@@ -17,7 +19,6 @@ public class User {
 	private String login;
 	private String avatar;
 	private UserPermission permission;
-	private String ip_address;
 
 	/**
 	 * 
@@ -62,7 +63,6 @@ public class User {
 		this.setEmail(email);
 		this.setLogin(login);
 		this.setAvatar(avatar);
-		this.setIp_address(ip_address);
 	}
 
 	/*
@@ -138,7 +138,11 @@ public class User {
 	}
 
 	public void setName(String name) throws UserException {
-		this.name = name;
+		if (name != null && name.matches("^[ a-zA-Zéèùëôûêïç\'-]{1,35}$")) {
+			this.name = name;
+		} else {
+			throw new UserException("Le nom n'est pas dans un format valide", UserAttribute.NAME);
+		}
 	}
 
 	public String getFirstname() {
@@ -146,7 +150,11 @@ public class User {
 	}
 
 	public void setFirstname(String firstname) throws UserException {
-		this.firstname = firstname;
+		if (firstname != null && firstname.matches("^[ a-zA-Zéèùëôûêïç\'-]{1,35}$")) {
+			this.firstname = firstname;
+		} else {
+			throw new UserException("Le prenom n'est pas dans un format valide", UserAttribute.FIRSTNAME);
+		}
 	}
 
 	public String getEmail() {
@@ -154,7 +162,12 @@ public class User {
 	}
 
 	public void setEmail(String email) throws UserException {
-		this.email = email;
+		if (email != null && email.matches(
+				"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])")) {
+			this.email = email;
+		} else {
+			throw new UserException("L'email n'est pas dans un format valide", UserAttribute.EMAIL);
+		}
 	}
 
 	public String getLogin() {
@@ -162,7 +175,11 @@ public class User {
 	}
 
 	public void setLogin(String login) throws UserException {
-		this.login = login;
+		if (login != null && login.matches("^[ a-zA-Zéèùëôûêïç\'-]{1,20}$")) {
+			this.login = login;
+		} else {
+			throw new UserException("Le login n'est pas dans un format valide", UserAttribute.LOGIN);
+		}
 	}
 
 	public String getAvatar() {
@@ -170,22 +187,22 @@ public class User {
 	}
 
 	public void setAvatar(String avatar) throws UserException {
-		this.avatar = avatar;
-	}
-
-	public String getIp_address() {
-		return ip_address;
-	}
-
-	public void setIp_address(String ip_address) throws UserException {
-		this.ip_address = ip_address;
+		if (avatar != null && avatar.matches(".*[\\.](gif|jpg|jpeg|tiff|png)$")) {
+			this.avatar = avatar;
+		} else if (avatar == null) {
+			this.avatar = "/images/compte.png";
+		} else {
+			throw new UserException("L'image du profil n'est pas dans un format valide", UserAttribute.AVATAR);
+		}
 	}
 
 	public static User register(String name, String firstname, String email, String password, String login,
-			String avatar) throws NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, PermissionException, UserException, InvalidKeyException  {
+			String avatar) throws NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException,
+			BadPaddingException, PermissionException, UserException, InvalidKeyException, DaoException {
 		User nubs = new User(name, firstname, email, login);
 		nubs.setPermission(new UserPermission(Roles.User, password));
-
-		return null;
+		DAOFactory.getInstance().getDaoUser().insertElement(nubs);
+		DAOFactory.getInstance().getRoles().insertElement(nubs.getPermission());
+		return nubs;
 	}
 }
